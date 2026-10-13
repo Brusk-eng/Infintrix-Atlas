@@ -12,9 +12,15 @@ class TaskOverride(Task):
         if self.is_new():
             self.validate_task_type_hierarchy()
 
-        if self.get("status") == "Completed" and self.has_value_changed("status") and not frappe.flags.get("is_review_approval"):
+        # Status is changed only through the review workflow actions
+        # (infintrix_atlas.api.task_review), never by editing the field directly.
+        if (
+            not self.is_new()
+            and self.has_value_changed("status")
+            and not frappe.flags.get("in_task_workflow")
+        ):
             frappe.throw(
-                _("Tasks can only be completed through the review workflow (Approve). Direct status change to Completed is not allowed.")
+                _("Task status cannot be edited directly. Use the workflow actions on the task (Start, Submit For Review, Approve, Request Changes, Reopen, ...).")
             )
 
         super().validate()

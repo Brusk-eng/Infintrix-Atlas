@@ -19,6 +19,20 @@ def _get_assignee(task_name, include_closed=False):
     return frappe.db.get_value("ToDo", filters, "allocated_to", order_by="creation desc")
 
 
+
+def _workflow_save(task):
+    """Save a status transition made by a workflow action.
+
+    Task.status is not directly editable (TaskOverride.validate rejects manual
+    changes); this flag is what lets the workflow actions through.
+    """
+    frappe.flags.in_task_workflow = True
+    try:
+        task.save(ignore_permissions=True)
+    finally:
+        frappe.flags.in_task_workflow = False
+
+
 def _can_submit_for_review(task, user=None):
     user = user or frappe.session.user
     if user == "Administrator":
@@ -86,8 +100,13 @@ def get_review_actions(task_name):
     is_assignee = _get_assignee(task.name, include_closed=task.status == "Completed") == user
 
     actions = []
-    if task.status == "Working" and (privileged or is_assignee):
-        actions.append("submit_for_review")
+    can_work = privileged or is_assignee
+    if task.status == "Open" and can_work:
+        actions.extend(["start_work", "cancel_task"])
+    elif task.status == "Working" and can_work:
+        actions.extend(["submit_for_review", "block_task", "cancel_task"])
+    elif task.status == "Blocked" and can_work:
+        actions.extend(["unblock_task", "cancel_task"])
     elif task.status == "Pending Review" and (privileged or task.get("custom_reviewer") == user):
         actions.extend(["approve", "request_changes"])
     elif task.status == "Completed" and (privileged or is_assignee):
@@ -97,6 +116,7 @@ def get_review_actions(task_name):
         "actions": actions,
         "is_assignee": is_assignee,
         "reviewer": task.get("custom_reviewer"),
+        "assignee": _get_assignee(task.name),
     }
 
 
@@ -173,7 +193,7 @@ def submit_for_review(task_name, reviewer=None):
     task.status = "Pending Review"
     task.custom_reviewer = reviewer
     task.custom_review_cycles = (task.custom_review_cycles or 0) + 1
-    task.save(ignore_permissions=True)
+    _workflow_save(task)
 
     submitter = frappe.utils.get_fullname(frappe.session.user)
     send_notification(
@@ -193,7 +213,7 @@ def submit_for_review(task_name, reviewer=None):
 
 
 @frappe.whitelist()
-def approve_task(task_name, comments=None):
+def approve_task(task_name, comments=None, completed_by=None):
     task = _get_task(task_name)
 
     if not _can_approve(task):
@@ -201,6 +221,14 @@ def approve_task(task_name, comments=None):
 
     if task.status != "Pending Review":
         frappe.throw(_("Only tasks in Pending Review can be approved"))
+
+    # Approval auto-completes the task, so record who did the work (defaults to the
+    # assignee, whose ToDo is still open at this point).
+    completed_by = completed_by or _get_assignee(task.name)
+    if completed_by:
+        if not frappe.db.get_value("User", completed_by, "enabled"):
+            frappe.throw(_("Completed By must be an enabled user"))
+        task.completed_by = completed_by
 
     task.append("custom_task_review_logs", {
         "reviewer": frappe.session.user,
@@ -212,9 +240,7 @@ def approve_task(task_name, comments=None):
     })
 
     task.status = "Completed"
-    frappe.flags.is_review_approval = True
-    task.save(ignore_permissions=True)
-    frappe.flags.is_review_approval = False
+    _workflow_save(task)
 
     _notify_assignee(task, "approved",
         f"Your task '<b>{task.subject}</b>' has been approved and completed.")
@@ -247,7 +273,7 @@ def request_changes(task_name, comments):
     })
 
     task.status = "Working"
-    task.save(ignore_permissions=True)
+    _workflow_save(task)
 
     _notify_assignee(task, "changes_requested",
         f"Changes have been requested on your task '<b>{task.subject}</b>'.")
@@ -306,7 +332,7 @@ def reopen_task(task_name, reason, reopen_type):
     task.custom_reopen_count = reopen_sequence
     task.custom_last_reopened_on = now()
     task.custom_last_reopened_by = frappe.session.user
-    task.save(ignore_permissions=True)
+    _workflow_save(task)
 
     _notify_project_managers(task, "reopened",
         f"Task '<b>{task.subject}</b>' has been reopened. Reason: {reason}")
@@ -314,6 +340,70 @@ def reopen_task(task_name, reason, reopen_type):
     frappe.db.commit()
 
     return {"success": True, "message": _("Task reopened")}
+
+
+def _simple_transition(task_name, from_statuses, to_status, denied_msg, wrong_status_msg):
+    task = _get_task(task_name)
+    user = frappe.session.user
+    assignee = _get_assignee(task.name)
+    if not (_is_review_privileged(user) or assignee == user):
+        frappe.throw(denied_msg)
+    if task.status not in from_statuses:
+        frappe.throw(wrong_status_msg)
+    task.status = to_status
+    return task
+
+
+@frappe.whitelist()
+def start_work(task_name):
+    task = _simple_transition(
+        task_name, ("Open",), "Working",
+        _("Not permitted to start this task"), _("Only Open tasks can be started"),
+    )
+    _workflow_save(task)
+    frappe.db.commit()
+    return {"success": True, "message": _("Task started")}
+
+
+@frappe.whitelist()
+def block_task(task_name, reason):
+    if not reason or not reason.strip():
+        frappe.throw(_("Reason is mandatory when blocking a task"))
+    task = _simple_transition(
+        task_name, ("Working",), "Blocked",
+        _("Not permitted to block this task"), _("Only tasks in Working status can be blocked"),
+    )
+    _workflow_save(task)
+    task.add_comment("Comment", _("Task blocked: {0}").format(reason))
+    _notify_project_managers(task, "blocked",
+        f"Task '<b>{task.subject}</b>' is blocked. Reason: {reason}")
+    frappe.db.commit()
+    return {"success": True, "message": _("Task blocked")}
+
+
+@frappe.whitelist()
+def unblock_task(task_name):
+    task = _simple_transition(
+        task_name, ("Blocked",), "Working",
+        _("Not permitted to unblock this task"), _("Only Blocked tasks can be unblocked"),
+    )
+    _workflow_save(task)
+    frappe.db.commit()
+    return {"success": True, "message": _("Task unblocked")}
+
+
+@frappe.whitelist()
+def cancel_task(task_name, reason=None):
+    task = _simple_transition(
+        task_name, ("Open", "Working", "Blocked"), "Cancelled",
+        _("Not permitted to cancel this task"),
+        _("Only Open, Working or Blocked tasks can be cancelled"),
+    )
+    _workflow_save(task)
+    if reason and reason.strip():
+        task.add_comment("Comment", _("Task cancelled: {0}").format(reason))
+    frappe.db.commit()
+    return {"success": True, "message": _("Task cancelled")}
 
 
 def _get_project_managers(task):
