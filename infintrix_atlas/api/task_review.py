@@ -97,6 +97,7 @@ def get_review_actions(task_name):
         "actions": actions,
         "is_assignee": is_assignee,
         "reviewer": task.get("custom_reviewer"),
+        "assignee": _get_assignee(task.name),
     }
 
 
@@ -193,7 +194,7 @@ def submit_for_review(task_name, reviewer=None):
 
 
 @frappe.whitelist()
-def approve_task(task_name, comments=None):
+def approve_task(task_name, comments=None, completed_by=None):
     task = _get_task(task_name)
 
     if not _can_approve(task):
@@ -201,6 +202,14 @@ def approve_task(task_name, comments=None):
 
     if task.status != "Pending Review":
         frappe.throw(_("Only tasks in Pending Review can be approved"))
+
+    # Approval auto-completes the task, so record who did the work (defaults to the
+    # assignee, whose ToDo is still open at this point).
+    completed_by = completed_by or _get_assignee(task.name)
+    if completed_by:
+        if not frappe.db.get_value("User", completed_by, "enabled"):
+            frappe.throw(_("Completed By must be an enabled user"))
+        task.completed_by = completed_by
 
     task.append("custom_task_review_logs", {
         "reviewer": frappe.session.user,
