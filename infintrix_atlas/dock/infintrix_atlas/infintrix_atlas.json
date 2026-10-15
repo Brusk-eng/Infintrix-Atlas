@@ -1,0 +1,45 @@
+{
+ "app": "infintrix_atlas",
+ "creation": "2026-10-16 09:00:00.000000",
+ "docstatus": 0,
+ "doctype": "Dock",
+ "idx": 0,
+ "modified": "2026-10-16 09:00:00.000000",
+ "name": "infintrix_atlas",
+ "owner": "Administrator",
+ "standard": 1,
+ "items": [
+  {
+   "added": 0,
+   "hidden": 0,
+   "icon": "house",
+   "link_to": "Infintrix Atlas",
+   "link_type": "Sidebar",
+   "title": "Atlas"
+  },
+  {
+   "added": 0,
+   "hidden": 0,
+   "icon": "list-checks",
+   "link_to": "Atlas Work",
+   "link_type": "Sidebar",
+   "title": "Work"
+  },
+  {
+   "added": 0,
+   "hidden": 0,
+   "icon": "clipboard-list",
+   "link_to": "Atlas Planning",
+   "link_type": "Sidebar",
+   "title": "Planning"
+  },
+  {
+   "added": 0,
+   "hidden": 0,
+   "icon": "settings",
+   "link_to": "Atlas Setup",
+   "link_type": "Sidebar",
+   "title": "Setup"
+  }
+ ]
+}

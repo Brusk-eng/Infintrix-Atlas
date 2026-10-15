@@ -122,6 +122,93 @@ Based on:
 
 ---
 
+# 🖥 Desk Workspace
+
+Clicking **Infintrix Atlas** on the apps screen opens `/desk/infintrix-atlas`, a Desk workspace with a pinned sidebar
+(Atlas, Work, Planning, Setup). It has number cards (open/overdue/in-review tasks, active cycles, ...), charts, and
+React-powered **Projects** and **Tasks** pages. The old `/atlas` SPA is deprecated.
+
+After pulling changes: `bench build --app infintrix_atlas && bench --site <site> migrate`.
+
+---
+
+# 🔌 MCP Server (use Atlas from Claude, ChatGPT or any MCP client)
+
+Atlas exposes a [Model Context Protocol](https://modelcontextprotocol.io) server so an AI assistant can manage
+projects, tasks, cycles, requirements and more as a real Atlas user.
+
+- **Endpoint:** `POST https://<your-site>/api/method/infintrix_atlas.mcp.server.handle`
+  (streamable HTTP, JSON responses; the site must be reachable over HTTPS from the client)
+- **Permissions:** every tool runs as the authenticated user. Frappe permissions, project membership and the task
+  review workflow apply exactly as on Desk. Task status can only change through `task_workflow`.
+
+## Authentication
+
+**Option 1 - API key (Claude Code, scripts, most MCP clients)**
+
+1. Desk -> *User* -> your user -> *API Access* -> **Generate Keys**. Copy the key and secret.
+2. Send `Authorization: token <api_key>:<api_secret>` with every request.
+
+**Option 2 - OAuth (Claude.ai / ChatGPT custom connectors)**
+
+Frappe publishes its OAuth discovery documents (`/.well-known/oauth-protected-resource`,
+`/.well-known/oauth-authorization-server`). Create an *OAuth Client* in Desk (enable the discovery metadata in
+*OAuth Settings*), then add the endpoint above as a custom connector; the client runs the OAuth flow and signs in as you.
+
+## Connect a client
+
+Claude Code:
+
+```bash
+claude mcp add --transport http atlas https://<your-site>/api/method/infintrix_atlas.mcp.server.handle \
+  --header "Authorization: token <api_key>:<api_secret>"
+```
+
+Generic JSON config (clients that accept HTTP MCP servers):
+
+```json
+{
+  "mcpServers": {
+    "atlas": {
+      "type": "http",
+      "url": "https://<your-site>/api/method/infintrix_atlas.mcp.server.handle",
+      "headers": { "Authorization": "token <api_key>:<api_secret>" }
+    }
+  }
+}
+```
+
+Quick check with curl:
+
+```bash
+curl -s -X POST https://<your-site>/api/method/infintrix_atlas.mcp.server.handle \
+  -H "Authorization: token <api_key>:<api_secret>" -H "Content-Type: application/json" \
+  -d '{"jsonrpc":"2.0","id":1,"method":"tools/list"}'
+```
+
+## Tools
+
+| Area | Tools |
+|---|---|
+| Discovery | `whoami`, `describe_doctype`, `list_link_fields`, `find_link_options` |
+| Projects | `list_projects`, `get_project`, `project_links`, `project_metrics`, `archive_project`, `list_team`, `add_team_member`, `remove_team_member` |
+| Companies | `list_companies`, `get_company` |
+| Tasks | `list_tasks`, `get_task`, `create_task`, `update_task`, `assign_task`, `bulk_assign_tasks`, `add_comment`, `list_subtasks`, `task_activity`, `delete_task`, `add_watcher`, `remove_watcher`, `list_watchers` |
+| Task lifecycle | `task_workflow` - actions: `start`, `submit_for_review`, `approve`, `request_changes`, `reopen`, `block`, `unblock`, `cancel` |
+| Cycles | `list_cycles`, `cycle_summary`, `start_cycle`, `complete_cycle`, `move_tasks_to_cycle` |
+| Requirements and scope | `set_requirement_status`, `create_task_from_requirement`, `change_request_action` (submit/approve/reject/implement), `create_scope_snapshot`, `action_request` |
+| Generic CRUD | `list_records`, `get_record`, `create_record`, `update_record`, `delete_record`, `submit_record` on Project, Task, Task Type, Cycle, Requirement, Change Request, Scope Snapshot, Project Resource, Project Action Request, Work Item Relationship, AI Task Session, AI Task Draft, Atlas Settings, Timesheet |
+
+Example prompts: *"Create a task 'Fix login bug' in project PROJ-0001, high priority, assign to me"*,
+*"Start the task, then submit it for review by alice@example.com"*, *"Show all projects for company Infintrix with overdue tasks"*,
+*"Create a cycle for next week and move the open bugs into it"*.
+
+Secrets (password fields such as the AI API key in Atlas Settings) are never returned to MCP clients.
+
+Code: `infintrix_atlas/mcp/` (`server.py` protocol, `tools.py` + `tools_extra.py` tools).
+
+---
+
 # 🏗 Architecture
 
 - Backend: Frappe / ERPNext

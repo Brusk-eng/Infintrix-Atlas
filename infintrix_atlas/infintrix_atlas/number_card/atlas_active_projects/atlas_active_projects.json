@@ -1,0 +1,23 @@
+{
+ "creation": "2026-10-16 09:00:00.000000",
+ "docstatus": 0,
+ "idx": 0,
+ "modified": "2026-10-16 09:00:00.000000",
+ "modified_by": "Administrator",
+ "owner": "Administrator",
+ "module": "Infintrix Atlas",
+ "doctype": "Number Card",
+ "name": "Atlas Active Projects",
+ "label": "Atlas Active Projects",
+ "type": "Custom",
+ "method": "infintrix_atlas.api.dashboard.active_projects",
+ "document_type": "Project",
+ "function": "Count",
+ "is_public": 1,
+ "is_standard": 1,
+ "color": "#4F39F6",
+ "report_function": "Sum",
+ "show_full_number": 0,
+ "show_percentage_stats": 0,
+ "stats_time_interval": "Daily"
+}

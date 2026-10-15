@@ -1,0 +1,23 @@
+{
+ "creation": "2026-10-16 09:00:00.000000",
+ "docstatus": 0,
+ "idx": 0,
+ "modified": "2026-10-16 09:00:00.000000",
+ "modified_by": "Administrator",
+ "owner": "Administrator",
+ "module": "Infintrix Atlas",
+ "doctype": "Number Card",
+ "name": "Atlas My Open Tasks",
+ "label": "Atlas My Open Tasks",
+ "type": "Custom",
+ "method": "infintrix_atlas.api.dashboard.my_open_tasks",
+ "document_type": "Task",
+ "function": "Count",
+ "is_public": 1,
+ "is_standard": 1,
+ "color": "#0891b2",
+ "report_function": "Sum",
+ "show_full_number": 0,
+ "show_percentage_stats": 0,
+ "stats_time_interval": "Daily"
+}
