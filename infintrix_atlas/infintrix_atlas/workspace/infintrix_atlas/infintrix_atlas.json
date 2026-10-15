@@ -1,0 +1,151 @@
+{
+ "creation": "2026-10-16 09:00:00.000000",
+ "docstatus": 0,
+ "idx": 0,
+ "modified": "2026-10-16 09:00:00.000000",
+ "modified_by": "Administrator",
+ "owner": "Administrator",
+ "module": "Infintrix Atlas",
+ "doctype": "Workspace",
+ "name": "Infintrix Atlas",
+ "label": "Infintrix Atlas",
+ "title": "Infintrix Atlas",
+ "icon": "project",
+ "indicator_color": "blue",
+ "public": 1,
+ "is_hidden": 0,
+ "hide_custom": 0,
+ "type": "Workspace",
+ "link_type": "DocType",
+ "sequence_id": 0,
+ "content": "[{\"id\": \"h1\", \"type\": \"header\", \"data\": {\"text\": \"<span class=\\\"h4\\\"><b>Overview</b></span>\", \"col\": 12}}, {\"id\": \"nc0\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Atlas Active Projects\", \"col\": 3}}, {\"id\": \"nc1\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Atlas Open Tasks\", \"col\": 3}}, {\"id\": \"nc2\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Atlas My Open Tasks\", \"col\": 3}}, {\"id\": \"nc3\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Atlas Overdue Tasks\", \"col\": 3}}, {\"id\": \"nc4\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Atlas Tasks In Review\", \"col\": 3}}, {\"id\": \"nc5\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Atlas Completed This Week\", \"col\": 3}}, {\"id\": \"nc6\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Atlas Active Cycles\", \"col\": 3}}, {\"id\": \"nc7\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Atlas Open Change Requests\", \"col\": 3}}, {\"id\": \"nc8\", \"type\": \"number_card\", \"data\": {\"number_card_name\": \"Atlas Draft Requirements\", \"col\": 3}}, {\"id\": \"h2\", \"type\": \"header\", \"data\": {\"text\": \"<span class=\\\"h4\\\"><b>Insights</b></span>\", \"col\": 12}}, {\"id\": \"ch0\", \"type\": \"chart\", \"data\": {\"chart_name\": \"Atlas Tasks by Status\", \"col\": 6}}, {\"id\": \"ch1\", \"type\": \"chart\", \"data\": {\"chart_name\": \"Atlas Open Tasks by Priority\", \"col\": 6}}, {\"id\": \"ch2\", \"type\": \"chart\", \"data\": {\"chart_name\": \"Atlas Open Tasks by Project\", \"col\": 6}}, {\"id\": \"ch3\", \"type\": \"chart\", \"data\": {\"chart_name\": \"Atlas Tasks Completed per Day\", \"col\": 6}}, {\"id\": \"ch4\", \"type\": \"chart\", \"data\": {\"chart_name\": \"Atlas Projects by Status\", \"col\": 6}}, {\"id\": \"ch5\", \"type\": \"chart\", \"data\": {\"chart_name\": \"Atlas Requirements by Status\", \"col\": 6}}, {\"id\": \"h3\", \"type\": \"header\", \"data\": {\"text\": \"<span class=\\\"h4\\\"><b>Shortcuts</b></span>\", \"col\": 12}}, {\"id\": \"sc0\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Projects\", \"col\": 3}}, {\"id\": \"sc1\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Tasks\", \"col\": 3}}, {\"id\": \"sc2\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Backlog\", \"col\": 3}}, {\"id\": \"sc3\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Cycles\", \"col\": 3}}, {\"id\": \"sc4\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Requirements\", \"col\": 3}}, {\"id\": \"sc5\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Change Requests\", \"col\": 3}}, {\"id\": \"sc6\", \"type\": \"shortcut\", \"data\": {\"shortcut_name\": \"Atlas Settings\", \"col\": 3}}]",
+ "charts": [
+  {
+   "chart_name": "Atlas Tasks by Status",
+   "label": "Tasks by Status"
+  },
+  {
+   "chart_name": "Atlas Open Tasks by Priority",
+   "label": "Open Tasks by Priority"
+  },
+  {
+   "chart_name": "Atlas Open Tasks by Project",
+   "label": "Open Tasks by Project"
+  },
+  {
+   "chart_name": "Atlas Tasks Completed per Day",
+   "label": "Tasks Completed per Day"
+  },
+  {
+   "chart_name": "Atlas Projects by Status",
+   "label": "Projects by Status"
+  },
+  {
+   "chart_name": "Atlas Requirements by Status",
+   "label": "Requirements by Status"
+  }
+ ],
+ "number_cards": [
+  {
+   "number_card_name": "Atlas Active Projects",
+   "label": "Active Projects"
+  },
+  {
+   "number_card_name": "Atlas Open Tasks",
+   "label": "Open Tasks"
+  },
+  {
+   "number_card_name": "Atlas My Open Tasks",
+   "label": "My Open Tasks"
+  },
+  {
+   "number_card_name": "Atlas Overdue Tasks",
+   "label": "Overdue Tasks"
+  },
+  {
+   "number_card_name": "Atlas Tasks In Review",
+   "label": "Tasks In Review"
+  },
+  {
+   "number_card_name": "Atlas Completed This Week",
+   "label": "Completed This Week"
+  },
+  {
+   "number_card_name": "Atlas Active Cycles",
+   "label": "Active Cycles"
+  },
+  {
+   "number_card_name": "Atlas Open Change Requests",
+   "label": "Open Change Requests"
+  },
+  {
+   "number_card_name": "Atlas Draft Requirements",
+   "label": "Draft Requirements"
+  }
+ ],
+ "shortcuts": [
+  {
+   "label": "Projects",
+   "link_to": "atlas-projects",
+   "type": "Page",
+   "doc_view": "",
+   "color": "blue"
+  },
+  {
+   "label": "Tasks",
+   "link_to": "atlas-tasks",
+   "type": "Page",
+   "doc_view": "",
+   "color": "blue"
+  },
+  {
+   "label": "Backlog",
+   "link_to": "project_backlog",
+   "type": "Page",
+   "doc_view": "",
+   "color": "green"
+  },
+  {
+   "label": "Cycles",
+   "link_to": "Cycle",
+   "type": "DocType",
+   "doc_view": "List",
+   "color": "purple"
+  },
+  {
+   "label": "Requirements",
+   "link_to": "Requirement",
+   "type": "DocType",
+   "doc_view": "List",
+   "color": "orange"
+  },
+  {
+   "label": "Change Requests",
+   "link_to": "Change Request",
+   "type": "DocType",
+   "doc_view": "List",
+   "color": "orange"
+  },
+  {
+   "label": "Atlas Settings",
+   "link_to": "Atlas Settings",
+   "type": "DocType",
+   "doc_view": "",
+   "color": "gray"
+  }
+ ],
+ "links": [],
+ "custom_blocks": [],
+ "quick_lists": [],
+ "roles": [
+  {
+   "role": "System Manager"
+  },
+  {
+   "role": "Projects User"
+  },
+  {
+   "role": "Projects Manager"
+  }
+ ]
+}

@@ -4,34 +4,24 @@ app_publisher = "Muqeet Mughal"
 app_description = "A Project Management Software Built Specifically for the Software Development Teams"
 app_email = "muqeetmughal786@gmail.com"
 app_license = "mit"
-# app_icon_url = "/assets/infintrix_atlas/atlas/images/logo.svg"
-# app_icon_title = "Atlas"
-# app_icon_route = "/atlas"
-# add_to_apps_screen = [
-#     {
-#         "name": "atlas",
-#         "logo": "/assets/infintrix_atlas/atlas/images/logo.svg",
-#         "title": "Atlas",
-#         "route": "/desk/atlas",
-#         "has_permission": "infintrix_atlas.api.check_app_permission",
-#     }
-# ]
+app_logo_url = "/assets/infintrix_atlas/atlas/images/logo.png"
+
+app_home = "/desk/infintrix-atlas"
+
+add_to_apps_screen = [
+    {
+        "name": "infintrix_atlas",
+        "logo": "/assets/infintrix_atlas/atlas/images/logo.png",
+        "title": "Infintrix Atlas",
+        "route": "/desk/infintrix-atlas",
+        "has_permission": "infintrix_atlas.api.check_app_permission",
+    }
+]
 
 # Apps
 # ------------------
 
 required_apps = ["hrms"]
-
-# Each item in the list will be shown as an app in the apps page
-# add_to_apps_screen = [
-# 	{
-# 		"name": "infintrix_atlas",
-# 		"logo": "/assets/infintrix_atlas/logo.png",
-# 		"title": "Infintrix Atlas",
-# 		"route": "/infintrix_atlas",
-# 		"has_permission": "infintrix_atlas.api.permission.has_app_permission"
-# 	}
-# ]
 
 # Includes in <head>
 # ------------------

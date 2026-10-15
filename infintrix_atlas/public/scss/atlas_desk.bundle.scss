@@ -1,0 +1,138 @@
+.atlas-page {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	padding: 4px 0 24px;
+}
+
+.atlas-toolbar {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 8px;
+
+	input.form-control {
+		max-width: 260px;
+	}
+
+	select.form-control {
+		max-width: 220px;
+	}
+}
+
+.atlas-check {
+	display: inline-flex;
+	align-items: center;
+	gap: 4px;
+	margin: 0 0 0 4px;
+	font-size: var(--text-sm);
+}
+
+.atlas-state {
+	padding: 48px 0;
+	text-align: center;
+	color: var(--text-muted);
+
+	&--error {
+		color: var(--red-500);
+	}
+}
+
+.atlas-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+	gap: 12px;
+}
+
+.atlas-card,
+.atlas-task {
+	text-align: left;
+	background: var(--card-bg);
+	border: 1px solid var(--border-color);
+	border-radius: var(--border-radius-md);
+	padding: 12px;
+	cursor: pointer;
+	color: var(--text-color);
+
+	&:hover {
+		border-color: var(--primary);
+	}
+}
+
+.atlas-card {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+
+	&__title {
+		font-weight: 600;
+	}
+
+	&__sub,
+	&__meta {
+		font-size: var(--text-sm);
+		color: var(--text-muted);
+	}
+
+	&__meta {
+		display: flex;
+		justify-content: space-between;
+	}
+}
+
+.atlas-progress {
+	height: 6px;
+	border-radius: 3px;
+	background: var(--control-bg);
+	overflow: hidden;
+
+	span {
+		display: block;
+		height: 100%;
+		background: var(--primary);
+	}
+}
+
+.atlas-board {
+	display: grid;
+	grid-template-columns: repeat(5, minmax(220px, 1fr));
+	gap: 12px;
+	overflow-x: auto;
+	align-items: start;
+}
+
+.atlas-col {
+	display: flex;
+	flex-direction: column;
+	gap: 8px;
+	background: var(--control-bg);
+	border-radius: var(--border-radius-md);
+	padding: 8px;
+
+	header {
+		font-weight: 600;
+		font-size: var(--text-sm);
+	}
+}
+
+.atlas-count {
+	color: var(--text-muted);
+	font-weight: 400;
+}
+
+.atlas-task {
+	padding: 8px 10px;
+
+	&__subject {
+		font-size: var(--text-sm);
+		word-break: break-word;
+	}
+
+	&__meta {
+		display: flex;
+		gap: 8px;
+		margin-top: 4px;
+		font-size: var(--text-xs);
+		color: var(--text-muted);
+	}
+}

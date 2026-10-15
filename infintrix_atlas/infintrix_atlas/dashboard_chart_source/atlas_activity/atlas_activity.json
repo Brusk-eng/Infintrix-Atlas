@@ -1,0 +1,13 @@
+{
+ "creation": "2026-10-16 09:00:00.000000",
+ "docstatus": 0,
+ "idx": 0,
+ "modified": "2026-10-16 09:00:00.000000",
+ "modified_by": "Administrator",
+ "owner": "Administrator",
+ "module": "Infintrix Atlas",
+ "doctype": "Dashboard Chart Source",
+ "name": "Atlas Activity",
+ "source_name": "Atlas Activity",
+ "timeseries": 0
+}

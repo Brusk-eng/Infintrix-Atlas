@@ -1,0 +1,40 @@
+{
+ "creation": "2026-10-16 09:00:00.000000",
+ "docstatus": 0,
+ "idx": 0,
+ "modified": "2026-10-16 09:00:00.000000",
+ "modified_by": "Administrator",
+ "owner": "Administrator",
+ "module": "Infintrix Atlas",
+ "doctype": "Dashboard Chart",
+ "name": "Atlas Projects by Status",
+ "chart_name": "Atlas Projects by Status",
+ "chart_type": "Custom",
+ "source": "Atlas Activity",
+ "filters_json": "{\"metric\": \"projects_by_status\"}",
+ "type": "Pie",
+ "color": "#7c3aed",
+ "custom_options": "{\"axisOptions\": {\"shortenYAxisNumbers\": 0, \"xIsSeries\": 1}, \"tooltipOptions\": {}}",
+ "empty_state_message": "Projects by status.",
+ "group_by_type": "Count",
+ "number_of_groups": 0,
+ "is_public": 1,
+ "is_standard": 1,
+ "roles": [
+  {
+   "role": "System Manager"
+  },
+  {
+   "role": "Projects User"
+  },
+  {
+   "role": "Projects Manager"
+  }
+ ],
+ "show_values_over_chart": 0,
+ "time_interval": "Yearly",
+ "timeseries": 0,
+ "timespan": "Last Year",
+ "use_report_chart": 0,
+ "y_axis": []
+}
