@@ -547,7 +547,11 @@ def toggle_archive_project(project):
 
 
 @frappe.whitelist()
-def list_projects(filters={}, limit=20, offset=0):
+def list_projects(filters=None, limit=20, offset=0):
+    # frappe.call from Desk JSON-encodes object args, so filters can arrive as a string.
+    filters = frappe.parse_json(filters) if filters else {}
+    limit = frappe.utils.cint(limit) or 20
+    offset = frappe.utils.cint(offset)
     Project = DocType("Project")
     Task = DocType("Task")
     ToDo = DocType("ToDo")
