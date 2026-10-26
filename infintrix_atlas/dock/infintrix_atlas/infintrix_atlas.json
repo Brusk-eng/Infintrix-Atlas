@@ -4,7 +4,7 @@
  "docstatus": 0,
  "doctype": "Dock",
  "idx": 0,
- "modified": "2026-10-16 09:00:00.000000",
+ "modified": "2026-10-26 09:00:00.000000",
  "name": "infintrix_atlas",
  "owner": "Administrator",
  "standard": 1,
@@ -32,6 +32,22 @@
    "link_to": "Atlas Planning",
    "link_type": "Sidebar",
    "title": "Planning"
+  },
+  {
+   "added": 0,
+   "hidden": 0,
+   "icon": "sparkles",
+   "link_to": "Atlas AI",
+   "link_type": "Sidebar",
+   "title": "AI"
+  },
+  {
+   "added": 0,
+   "hidden": 0,
+   "icon": "sparkles",
+   "link_to": "Atlas AI",
+   "link_type": "Sidebar",
+   "title": "AI"
   },
   {
    "added": 0,
